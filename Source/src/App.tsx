@@ -56,23 +56,18 @@ function App() {
 
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           <div className="space-y-10">
-            <div className="relative">
-              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl blur opacity-30"></div>
-              <ImageUpload onImageSelected={handleImageSelected} />
-            </div>
+            <ImageUpload onImageSelected={handleImageSelected} />
 
-            {sourceImage && (
-              <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-center text-cyan-400 neon-text">
-                  // 템플릿 선택
-                </h2>
-                <TemplateGrid
-                  selectedTemplate={selectedTemplate}
-                  onTemplateSelect={handleTemplateSelect}
-                  baseUrl={TEMPLATE_BASE_URL}
-                />
-              </div>
-            )}
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold text-center text-cyan-400 neon-text">
+                // 템플릿 선택
+              </h2>
+              <TemplateGrid
+                selectedTemplate={selectedTemplate}
+                onTemplateSelect={handleTemplateSelect}
+                baseUrl={TEMPLATE_BASE_URL}
+              />
+            </div>
           </div>
 
           <div className="space-y-10">
