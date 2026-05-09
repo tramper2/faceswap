@@ -10,7 +10,7 @@ const TEMPLATE_COUNT = 10;
 
 export function TemplateGrid({ selectedTemplate, onTemplateSelect, baseUrl }: TemplateGridProps) {
   const getTemplateUrl = useCallback(
-    (index: number) => `${baseUrl}/template_${String(index + 1).padStart(2, '0')}.webp`,
+    (index: number) => `${baseUrl}/template_${String(index + 1).padStart(2, '0')}.jpg`,
     [baseUrl]
   );
 
