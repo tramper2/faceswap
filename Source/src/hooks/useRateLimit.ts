@@ -4,6 +4,9 @@ const DAILY_LIMIT = 3;
 const STORAGE_KEY = 'swap_count';
 const DATE_KEY = 'swap_date';
 
+// 개발 모드에서 제한 해제 (VITE_RATE_LIMIT=false)
+const ENABLE_RATE_LIMIT = import.meta.env.VITE_RATE_LIMIT !== 'false';
+
 interface RateLimitState {
   remaining: number;
   isLimited: boolean;
@@ -11,9 +14,13 @@ interface RateLimitState {
 }
 
 export function useRateLimit(): RateLimitState {
-  const [remaining, setRemaining] = useState<number>(DAILY_LIMIT);
+  const [remaining, setRemaining] = useState<number>(ENABLE_RATE_LIMIT ? DAILY_LIMIT : 999);
 
   useEffect(() => {
+    if (!ENABLE_RATE_LIMIT) {
+      return;
+    }
+
     const today = new Date().toDateString();
     const storedDate = localStorage.getItem(DATE_KEY);
 
@@ -28,6 +35,10 @@ export function useRateLimit(): RateLimitState {
   }, []);
 
   const resetCount = useCallback(() => {
+    if (!ENABLE_RATE_LIMIT) {
+      return;
+    }
+
     const today = new Date().toDateString();
     const storedDate = localStorage.getItem(DATE_KEY);
 
@@ -45,8 +56,8 @@ export function useRateLimit(): RateLimitState {
   }, []);
 
   return {
-    remaining,
-    isLimited: remaining <= 0,
+    remaining: ENABLE_RATE_LIMIT ? remaining : 999,
+    isLimited: ENABLE_RATE_LIMIT ? remaining <= 0 : false,
     resetCount,
   };
 }
