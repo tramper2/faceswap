@@ -108,7 +108,7 @@ function App() {
 
         <footer className="mt-20 text-center relative">
           <div className="inline-block px-8 py-4 bg-black/50 backdrop-blur rounded-xl border border-cyan-500/30">
-            <p className="text-cyan-400 text-sm mb-1">// Powered by Segmind AI</p>
+            <p className="text-cyan-400 text-sm mb-1">// Powered by Artractive</p>
             <p className="text-pink-400 text-xs">일일 3회 한정 • 사이버 네트워크</p>
           </div>
         </footer>
