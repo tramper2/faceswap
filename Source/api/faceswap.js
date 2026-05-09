@@ -34,10 +34,18 @@ export default async function handler(req, res) {
       return res.status(response.status).json({ error: `Segmind API error: ${errorText}` });
     }
 
-    const result = await response.json();
+    const contentType = response.headers.get('content-type') || '';
 
-    // Base64 이미지 반환
-    return res.status(200).json({ image: result.image });
+    if (contentType.includes('application/json')) {
+      const result = await response.json();
+      return res.status(200).json(result);
+    } else {
+      // 이미지 바이너리 데이터인 경우
+      const arrayBuffer = await response.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      res.setHeader('Content-Type', contentType);
+      return res.status(200).send(buffer);
+    }
   } catch (error) {
     return res.status(500).json({
       error: error.message || 'Internal server error'
