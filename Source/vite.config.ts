@@ -13,7 +13,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://faceswap.vercel.app',
+        target: 'https://faceswap-six.vercel.app',
         changeOrigin: true,
         secure: true,
       },

@@ -58,6 +58,11 @@ npm run build
 
 main 브랜치에 푸시하면 자동으로 배포됩니다.
 
+### URLs
+
+- **GitHub Pages**: https://tramper2.github.io/faceswap/
+- **Vercel API**: https://faceswap-six.vercel.app/api/faceswap/
+
 ## 프로젝트 구조
 
 ```
