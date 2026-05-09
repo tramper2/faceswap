@@ -6,7 +6,7 @@ import { ResultDisplay } from './components/ResultDisplay';
 import { useRateLimit } from './hooks/useRateLimit';
 import { useFaceSwap } from './hooks/useFaceSwap';
 
-const TEMPLATE_BASE_URL = '/assets/templates';
+const TEMPLATE_BASE_URL = `${import.meta.env.BASE_URL}assets/templates`;
 const API_URL = import.meta.env.VITE_API_URL || '/api/faceswap';
 
 function App() {
