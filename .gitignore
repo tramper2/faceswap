@@ -32,3 +32,4 @@ yarn-error.log*
 
 # Sensitive information
 Doc/기본정보.md
+.vercel

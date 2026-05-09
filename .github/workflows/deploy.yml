@@ -1,4 +1,4 @@
-name: Deploy Face Swap App
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  deploy-github-pages:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,16 +30,6 @@ jobs:
         run: npm run build
         env:
           VITE_API_URL: ${{ secrets.API_URL }}
-
-      - name: Deploy to Vercel (Functions)
-        uses: amondnet/vercel-action@v25
-        with:
-          working-directory: ./Source
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-          scope: ${{ secrets.VERCEL_ORG_ID }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
