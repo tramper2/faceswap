@@ -70,17 +70,17 @@ Source/
 │   │   └── ResultDisplay.tsx # 결과 미리보기/다운로드
 │   ├── hooks/                # Custom Hooks
 │   │   ├── useImageUpload.ts # 이미지 업로드 & 리사이징
-│   │   ├── useRateLimit.ts   # 일일 10회 제한
+│   │   ├── useRateLimit.ts   # 일일 3회 제한
 │   │   └── useFaceSwap.ts    # API 호출
 │   ├── utils/
 │   │   └── imageProcessor.ts # Canvas API 유틸리티
 │   ├── App.tsx               # 메인 컴포넌트
 │   └── main.tsx              # Entry point
 ├── api/
-│   └── faceswap.ts           # Vercel Function 프록시
+│   └── faceswap.js           # Vercel Function 프록시
 ├── public/
 │   └── assets/
-│       └── templates/        # 템플릿 이미지 (template_01.webp ~ template_10.webp)
+│       └── templates/        # 템플릿 이미지 (template_01.jpg ~ template_10.jpg)
 ├── vite.config.ts            # Vite 설정
 ├── vercel.json               # Vercel Functions 라우팅
 ├── tailwind.config.js        # Tailwind 설정
@@ -113,7 +113,7 @@ POST https://api.segmind.com/v1/faceswap-v5
 
 ## 사용 제한
 
-- 일일 10회 무료 이용 가능
+- **일일 3회 이용 가능** (유료 API 남용 방지)
 - localStorage에 저장되어 브라우저마다 별도 관리
 
 ## 참고 자료

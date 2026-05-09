@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-const DAILY_LIMIT = 10;
+const DAILY_LIMIT = 3;
 const STORAGE_KEY = 'swap_count';
 const DATE_KEY = 'swap_date';
 
