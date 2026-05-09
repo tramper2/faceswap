@@ -6,6 +6,11 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   deploy-github-pages:
     runs-on: ubuntu-latest
@@ -13,6 +18,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -29,7 +36,6 @@ jobs:
         working-directory: ./Source
         run: npm run build
         env:
-          # Vercel 배포 후 실제 URL로 변경 필요
           VITE_API_URL: https://faceswap.vercel.app/api/faceswap
 
       - name: Deploy to GitHub Pages
@@ -37,3 +43,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./Source/dist
+          cname:
