@@ -38,7 +38,7 @@ jobs:
         working-directory: ./Source
         run: npm run build
         env:
-          VITE_API_URL: https://faceswap.vercel.app/api/faceswap/
+          VITE_API_URL: https://faceswap-six.vercel.app/api/faceswap/
           VITE_RATE_LIMIT: true
 
       - name: Setup Pages
