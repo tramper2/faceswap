@@ -8,7 +8,7 @@ import { useFaceSwap } from './hooks/useFaceSwap';
 
 const TEMPLATE_BASE_URL = import.meta.env.DEV
   ? 'https://tramper2.github.io/faceswap/assets/templates'
-  : `${import.meta.env.BASE_URL}assets/templates`;
+  : `${window.location.origin}${import.meta.env.BASE_URL}assets/templates`;
 const API_URL = import.meta.env.VITE_API_URL || '/api/faceswap/';
 
 function App() {
