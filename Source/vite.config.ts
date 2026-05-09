@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 // 리포지토리 이름이 'Faceswap'인 경우 base를 '/Faceswap/'으로 설정
 export default defineConfig({
   plugins: [react()],
-  base: '/Faceswap/',
+  base: '/faceswap/',
   build: {
     outDir: 'dist',
     sourcemap: true,
