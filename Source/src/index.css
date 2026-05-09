@@ -1,13 +1,102 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
-  font-family: system-ui, -apple-system, sans-serif;
-  color-scheme: light dark;
+  font-family: 'Orbitron', system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
 }
 
 body {
-  margin: 0;
-  min-height: 100vh;
+  background-color: black;
+  background-image:
+    radial-gradient(ellipse at top, #1a0a2e 0%, transparent 50%),
+    radial-gradient(ellipse at bottom, #0f0f23 0%, transparent 50%);
+  background-attachment: fixed;
+  color: white;
+}
+
+.neon-text {
+  text-shadow:
+    0 0 7px #fff,
+    0 0 10px #fff,
+    0 0 21px #fff,
+    0 0 42px #0fa,
+    0 0 82px #0fa,
+    0 0 92px #0fa,
+    0 0 102px #0fa,
+    0 0 151px #0fa;
+}
+
+.neon-text-pink {
+  text-shadow:
+    0 0 7px #fff,
+    0 0 10px #fff,
+    0 0 21px #fff,
+    0 0 42px #f0f,
+    0 0 82px #f0f,
+    0 0 92px #f0f,
+    0 0 102px #f0f,
+    0 0 151px #f0f;
+}
+
+.neon-border {
+  box-shadow:
+    0 0 5px #0fa,
+    0 0 10px #0fa,
+    inset 0 0 5px #0fa,
+    inset 0 0 10px #0fa;
+}
+
+.neon-border-pink {
+  box-shadow:
+    0 0 5px #f0f,
+    0 0 10px #f0f,
+    inset 0 0 5px #f0f,
+    inset 0 0 10px #f0f;
+}
+
+.neon-box {
+  box-shadow:
+    0 0 20px rgba(0, 255, 255, 0.5),
+    0 0 40px rgba(0, 255, 255, 0.3),
+    inset 0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+.cyber-grid {
+  background-image:
+    linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+@keyframes glitch {
+  2%, 64% {
+    transform: translate(2px, 0) skew(0deg);
+  }
+  4%, 60% {
+    transform: translate(-2px, 0) skew(0deg);
+  }
+  62% {
+    transform: translate(0, 0) skew(5deg);
+  }
+}
+
+@keyframes pulseNeon {
+  0%, 100% {
+    box-shadow:
+      0 0 5px #0fa,
+      0 0 10px #0fa,
+      0 0 20px #0fa,
+      0 0 40px #0fa;
+  }
+  50% {
+    box-shadow:
+      0 0 10px #f0f,
+      0 0 20px #f0f,
+      0 0 40px #f0f,
+      0 0 80px #f0f;
+  }
+}
+
+.pulse-neon {
+  animation: pulseNeon 2s ease-in-out infinite;
 }

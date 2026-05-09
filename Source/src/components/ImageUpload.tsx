@@ -49,13 +49,14 @@ export function ImageUpload({ onImageSelected }: ImageUploadProps) {
   }, [clearImage]);
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-md mx-auto relative z-10">
       {!image ? (
         <div
           onDrop={handleDrop}
           onDragOver={handleDragOver}
-          className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center hover:border-purple-500 transition-colors cursor-pointer"
+          className="relative bg-black/60 backdrop-blur-xl rounded-2xl p-10 text-center border-2 border-dashed border-cyan-500/50 hover:border-cyan-400 hover:neon-box transition-all duration-300 cursor-pointer group"
         >
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <input
             type="file"
             accept="image/*"
@@ -63,24 +64,27 @@ export function ImageUpload({ onImageSelected }: ImageUploadProps) {
             className="hidden"
             id="file-upload"
           />
-          <label htmlFor="file-upload" className="cursor-pointer">
-            <Upload className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-            <p className="text-gray-600 dark:text-gray-400 mb-2">
+          <label htmlFor="file-upload" className="cursor-pointer relative z-10">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-cyan-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Upload className="w-10 h-10 text-cyan-400" />
+            </div>
+            <p className="text-cyan-300 text-lg mb-2 font-semibold">
               이미지를 드래그하거나 클릭하여 업로드
             </p>
-            <p className="text-sm text-gray-500">JPG, PNG (최대 10MB)</p>
+            <p className="text-sm text-purple-400">JPG, PNG (최대 10MB)</p>
           </label>
         </div>
       ) : (
         <div className="relative">
+          <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl blur opacity-50"></div>
           <img
             src={image.preview}
             alt="Uploaded"
-            className="w-full rounded-lg shadow-lg"
+            className="relative w-full rounded-2xl shadow-2xl border-2 border-cyan-500/50"
           />
           <button
             onClick={handleClear}
-            className="mt-4 w-full py-2 px-4 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg transition-colors"
+            className="mt-4 w-full py-3 px-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 rounded-xl font-semibold transition-all duration-300 neon-border-pink"
           >
             변경하기
           </button>
@@ -88,14 +92,17 @@ export function ImageUpload({ onImageSelected }: ImageUploadProps) {
       )}
 
       {isProcessing && (
-        <div className="mt-4 text-center text-gray-600 dark:text-gray-400">
-          처리 중...
+        <div className="mt-4 text-center text-cyan-400 font-semibold">
+          <div className="inline-flex items-center gap-2">
+            <div className="w-2 h-2 bg-cyan-400 rounded-full animate-ping"></div>
+            처리 중...
+          </div>
         </div>
       )}
 
       {error && (
-        <div className="mt-4 text-center text-red-500 bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
-          {error}
+        <div className="mt-4 text-center text-red-400 bg-red-500/20 border border-red-500/50 p-4 rounded-xl neon-box">
+          <span className="font-semibold">{error}</span>
         </div>
       )}
     </div>
