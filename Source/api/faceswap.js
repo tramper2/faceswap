@@ -1,34 +1,23 @@
-export default async function handler(req) {
+export default async function handler(req, res) {
   // CORS 헤더 설정
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-  };
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // OPTIONS 요청 처리
+  // OPTIONS 요청 처리 (preflight)
   if (req.method === 'OPTIONS') {
-    return new Response(null, {
-      status: 200,
-      headers: corsHeaders
-    });
+    return res.status(200).end();
   }
 
   if (req.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-      status: 405,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const { sourceImage, targetImage } = await req.json();
+    const { source_image, target_image } = req.body;
 
-    if (!sourceImage || !targetImage) {
-      return new Response(JSON.stringify({ error: 'sourceImage and targetImage are required' }), {
-        status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
+    if (!source_image || !target_image) {
+      return res.status(400).json({ error: 'source_image and target_image are required' });
     }
 
     // Segmind Faceswap v5 API 호출
@@ -39,8 +28,8 @@ export default async function handler(req) {
         'x-api-key': process.env.SEGMIND_API_KEY || '',
       },
       body: JSON.stringify({
-        source_image: sourceImage,
-        target_image: targetImage,
+        source_image,
+        target_image,
         image_format: 'png',
         quality: 95,
       }),
@@ -48,25 +37,16 @@ export default async function handler(req) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      return new Response(JSON.stringify({ error: `Segmind API error: ${errorText}` }), {
-        status: response.status,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
+      return res.status(response.status).json({ error: `Segmind API error: ${errorText}` });
     }
 
     const result = await response.json();
 
     // Base64 이미지 반환
-    return new Response(JSON.stringify({ image: result.image }), {
-      status: 200,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
+    return res.status(200).json({ image: result.image });
   } catch (error) {
-    return new Response(JSON.stringify({
+    return res.status(500).json({
       error: error.message || 'Internal server error'
-    }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
 }
