@@ -1,37 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { VercelRequest, VercelResponse } from '@vercel/node';
 
-export const config = {
-  runtime: 'edge',
-};
-
-export default async function handler(req: NextRequest) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   // CORS 헤더 설정
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-  };
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   // OPTIONS 요청 처리
   if (req.method === 'OPTIONS') {
-    return new NextResponse(null, { headers: corsHeaders });
+    return res.status(200).end();
   }
 
   if (req.method !== 'POST') {
-    return NextResponse.json(
-      { error: 'Method not allowed' },
-      { status: 405, headers: corsHeaders }
-    );
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const { sourceImage, targetImage } = await req.json();
+    const { sourceImage, targetImage } = req.body;
 
     if (!sourceImage || !targetImage) {
-      return NextResponse.json(
-        { error: 'sourceImage and targetImage are required' },
-        { status: 400, headers: corsHeaders }
-      );
+      return res.status(400).json({ error: 'sourceImage and targetImage are required' });
     }
 
     // Segmind Faceswap v5 API 호출
@@ -51,23 +39,16 @@ export default async function handler(req: NextRequest) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      return NextResponse.json(
-        { error: `Segmind API error: ${errorText}` },
-        { status: response.status, headers: corsHeaders }
-      );
+      return res.status(response.status).json({ error: `Segmind API error: ${errorText}` });
     }
 
     const result = await response.json();
 
     // Base64 이미지 반환
-    return NextResponse.json(
-      { image: result.image },
-      { headers: corsHeaders }
-    );
+    return res.status(200).json({ image: result.image });
   } catch (error) {
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Internal server error' },
-      { status: 500, headers: corsHeaders }
-    );
+    return res.status(500).json({
+      error: error instanceof Error ? error.message : 'Internal server error'
+    });
   }
 }
