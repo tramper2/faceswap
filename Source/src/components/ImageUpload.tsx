@@ -11,12 +11,12 @@ export function ImageUpload({ onImageSelected }: ImageUploadProps) {
 
   const handleFileSelect = useCallback(
     async (file: File) => {
-      await processImage(file);
-      if (image?.base64) {
-        onImageSelected(image.base64);
+      const base64 = await processImage(file);
+      if (base64) {
+        onImageSelected(base64);
       }
     },
-    [processImage, image?.base64, onImageSelected]
+    [processImage, onImageSelected]
   );
 
   const handleDrop = useCallback(
