@@ -1,23 +1,34 @@
-module.exports = async function handler(req, res) {
+export default async function handler(req) {
   // CORS 헤더 설정
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
 
   // OPTIONS 요청 처리
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    return new Response(null, {
+      status: 200,
+      headers: corsHeaders
+    });
   }
 
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
   }
 
   try {
-    const { sourceImage, targetImage } = req.body;
+    const { sourceImage, targetImage } = await req.json();
 
     if (!sourceImage || !targetImage) {
-      return res.status(400).json({ error: 'sourceImage and targetImage are required' });
+      return new Response(JSON.stringify({ error: 'sourceImage and targetImage are required' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
     }
 
     // Segmind Faceswap v5 API 호출
@@ -37,16 +48,25 @@ module.exports = async function handler(req, res) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      return res.status(response.status).json({ error: `Segmind API error: ${errorText}` });
+      return new Response(JSON.stringify({ error: `Segmind API error: ${errorText}` }), {
+        status: response.status,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
     }
 
     const result = await response.json();
 
     // Base64 이미지 반환
-    return res.status(200).json({ image: result.image });
+    return new Response(JSON.stringify({ image: result.image }), {
+      status: 200,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
   } catch (error) {
-    return res.status(500).json({
+    return new Response(JSON.stringify({
       error: error.message || 'Internal server error'
+    }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
-};
+}
